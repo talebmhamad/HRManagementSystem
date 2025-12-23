@@ -13,6 +13,10 @@ namespace HRManagementSystem.Data
 
         DbSet<Employee> Employees { get; set; } = null!;
         DbSet<Department> Departments { get; set; } = null!;
+        DbSet<User> Users { get; set; } = null!;
+        DbSet<Role> Roles { get; set; } = null!;
+        DbSet<Attendance> Attendances { get; set; } = null!;
+        DbSet<Contract> Contracts { get; set; } = null!;
 
 
     }

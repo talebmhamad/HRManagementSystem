@@ -14,7 +14,6 @@ namespace HRManagementSystem.Data.Entities
         [MaxLength(250)]
         public string? Description { get; set; }
 
-        // Navigation Property
         public ICollection<Employee> Employees { get; set; } = new List<Employee>();
     }
 }

@@ -28,7 +28,11 @@ namespace HRManagementSystem.Data.Entities
 
         public bool IsActive { get; set; } = true;
 
-        // Foreign Key
+        public bool HasUserAccount { get; set; } = false;
+
+        [MaxLength(300)]
+        public string? ProfileImagePath { get; set; }
+
         public int DepartmentId { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]
