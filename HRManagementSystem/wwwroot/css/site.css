@@ -1,22 +1,59 @@
-html {
-  font-size: 14px;
+/* Custom Navbar Styling */
+.navbar-main {
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    color: #4e73df !important;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.nav-link {
+    font-weight: 500;
+    color: #5a5c69 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.2s;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+    .nav-link:hover {
+        color: #4e73df !important;
+        background-color: #f8f9fc;
+    }
+
+/* Active Link Styling */
+.nav-item.active .nav-link {
+    color: #4e73df !important;
+    background-color: #f0f2f9;
 }
 
-body {
-  margin-bottom: 60px;
+/* Dropdown Improvements */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+}
+
+    .dropdown-item:hover {
+        background-color: #f8f9fc;
+        color: #4e73df;
+    }
+
+/* User Profile Section */
+.user-avatar-wrapper {
+    background-color: #f8f9fc;
+    padding: 4px 12px;
+    border-radius: 50px;
+    border: 1px solid #e3e6f0;
 }

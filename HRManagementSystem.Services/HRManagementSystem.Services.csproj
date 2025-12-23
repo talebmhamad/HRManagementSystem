@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HRManagementSystem.Data\HRManagementSystem.Data.csproj" />
     <ProjectReference Include="..\HRManagementSystem.Repositories\HRManagementSystem.Repositories.csproj" />
   </ItemGroup>

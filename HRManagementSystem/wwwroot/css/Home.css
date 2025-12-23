@@ -1,0 +1,49 @@
+﻿:root {
+    --hr-primary: #4e73df;
+    --hr-success: #1cc88a;
+    --hr-info: #36b9cc;
+    --hr-warning: #f6c23e;
+    --hr-danger: #e74a3b;
+}
+
+body {
+    background-color: #f8f9fc;
+}
+
+.card {
+    transition: transform 0.2s ease;
+    border-radius: 10px;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+    }
+
+/* Gradient borders for KPI cards */
+.border-left-primary {
+    border-left: 0.25rem solid var(--hr-primary) !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid var(--hr-success) !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid var(--hr-info) !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid var(--hr-warning) !important;
+}
+
+.icon-shape {
+    width: 48px;
+    height: 48px;
+    background: #f1f3f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+}
+
