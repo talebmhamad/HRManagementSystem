@@ -1,9 +1,9 @@
-﻿using HRManagementSystem.Data.Entities;
+﻿using HRManagementSystem.Data.DTOs;
 
 namespace HRManagementSystem.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<User?> AuthenticateAsync(string username, string password);
+        Task<UserDto?> AuthenticateAsync(string username, string password);
     }
 }

@@ -6,16 +6,7 @@
 
 <div class="container mt-4">
 
-    <!--  PAGE TITLE  -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">
-            <i class="bi bi-people-fill me-2"></i> Users Management
-        </h2>
-
-      
-    </div>
-
-    <!--  SUMMARY TILES  -->
+    <!--   TILES  -->
     <div class="row mb-4">
         <div class="col-md-4">
             <div class="card shadow-sm text-center">
@@ -48,17 +39,14 @@
         </div>
     </div>
 
-    <!--  USERS TABLE  -->
+    
+   
     <div class="card shadow-sm">
-        <div class="card-header fw-bold">
-            Users List
-        </div>
 
         <div class="card-body p-0">
             <table class="table table-striped mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>#</th>
                         <th>Username</th>
                         <th>Employee</th>
                         <th>Role</th>
@@ -70,10 +58,9 @@
                 <tbody>
                     @if (Model.Any())
                     {
-                        foreach (var user in Model)
+                        @foreach (var user in Model)
                         {
-                            <tr>
-                                <td>@user.UserId</td>
+                            <tr data-user-id="@user.UserId">
                                 <td>@user.Username</td>
                                 <td>@user.EmployeeName</td>
                                 <td>@user.Role</td>
@@ -88,14 +75,11 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    <a asp-action="Edit"
-                                       asp-route-id="@user.UserId"
-                                       class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-pencil-square"></i> Edit
-                                    </a>
+                                    <a asp-action="Edit"asp-route-id="@user.UserId"class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i> Edit</a>
                                 </td>
                             </tr>
                         }
+
                     }
                     else
                     {

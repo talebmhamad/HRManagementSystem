@@ -88,7 +88,6 @@
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
                                     <label asp-for="Password" class="form-label small fw-bold text-uppercase text-muted"></label>
-                                    <a href="#" class="small text-decoration-none text-primary">Forgot?</a>
                                 </div>
                                 <div class="input-group">
                                     <input asp-for="Password" type="password" id="password" class="form-control password-input" placeholder="••••••••" />
@@ -123,17 +122,17 @@
 
     <script>
         $(document).ready(function () {
+
             $("#togglePassword").click(function () {
                 const passwordField = $("#password");
                 const icon = $("#toggleIcon");
 
-                // Toggle the type attribute
                 const type = passwordField.attr("type") === "password" ? "text" : "password";
                 passwordField.attr("type", type);
 
-                // Toggle the icon
                 icon.toggleClass("bi-eye-slash bi-eye");
             });
+
         });
     </script>
 

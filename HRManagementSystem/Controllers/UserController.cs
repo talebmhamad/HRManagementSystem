@@ -13,7 +13,6 @@ namespace HRManagementSystem.Web.Controllers
             _userService = userService;
         }
 
-        // GET: UserController
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetAllAsync();
@@ -24,14 +23,11 @@ namespace HRManagementSystem.Web.Controllers
                 Username = u.Username,
                 Role = u.Role,
                 IsActive = u.IsActive,
-                EmployeeName = u.Employee.FirstName + " " + u.Employee.LastName
             }).ToList();
 
             return View(model);
         }
 
-
-        // GET: UserController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();

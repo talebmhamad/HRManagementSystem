@@ -1,10 +1,10 @@
-﻿using HRManagementSystem.Data.Entities;
+﻿using HRManagementSystem.Data.DTOs;
 
 namespace HRManagementSystem.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<List<User>> GetAllAsync();
-        Task<User?> GetByIdAsync(int id);
+        Task<List<UserDto>> GetAllAsync();
+        Task<UserDto?> GetByIdAsync(int id);
     }
 }

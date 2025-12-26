@@ -1,4 +1,4 @@
-﻿using HRManagementSystem.Data.Entities;
+﻿using HRManagementSystem.Data.DTOs;
 using HRManagementSystem.Repositories.Interfaces;
 using HRManagementSystem.Services.Interfaces;
 
@@ -13,14 +13,30 @@ namespace HRManagementSystem.Services.Implementations
             _userRepository = userRepository;
         }
 
-        public async Task<List<User>> GetAllAsync()
+        public async Task<List<UserDto>> GetAllAsync()
         {
-            return await _userRepository.GetUsers();
+            var users = await _userRepository.GetUsers();
+
+            return users.Select(u => new UserDto
+            {
+                UserId = u.UserId,
+                Username = u.Username,
+                IsActive = u.IsActive,
+              
+            }).ToList();
         }
 
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<UserDto?> GetByIdAsync(int id)
         {
-            return await _userRepository.GetUserById(id);
+            var user = await _userRepository.GetUserById(id);
+            if (user == null) return null;
+
+            return new UserDto
+            {
+                UserId = user.UserId,
+                Username = user.Username,
+                IsActive = user.IsActive,
+            };
         }
     }
 }
