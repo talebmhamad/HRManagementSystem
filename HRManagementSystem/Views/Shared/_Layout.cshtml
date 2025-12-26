@@ -39,15 +39,26 @@
                             <ul class="dropdown-menu animate slideIn">
                                 <li>
                                     <a class="dropdown-item" asp-controller="Employee" asp-action="Index">
-                                        <i class="bi bi-person-lines-fill me-2 text-muted"></i> Employee Directory
+                                        <i class="bi bi-person-lines-fill me-2 text-muted"></i>
+                                        Employee Directory
                                     </a>
                                 </li>
+
                                 <li>
                                     <a class="dropdown-item" asp-controller="Contract" asp-action="Index">
-                                        <i class="bi bi-file-earmark-text me-2 text-muted"></i> Employment Contracts
+                                        <i class="bi bi-file-earmark-text me-2 text-muted"></i>
+                                        Employment Contracts
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item" asp-controller="User" asp-action="Index">
+                                        <i class="bi bi-people-fill me-2 text-muted"></i>
+                                        Users
                                     </a>
                                 </li>
                             </ul>
+
                         </li>
 
                         <li class="nav-item">
@@ -113,11 +124,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - HRManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -2,9 +2,8 @@
 
 namespace HRManagementSystem.Services.Interfaces
 {
-    public interface IUserService
+    public interface IAuthService
     {
         Task<User?> AuthenticateAsync(string username, string password);
     }
-
 }

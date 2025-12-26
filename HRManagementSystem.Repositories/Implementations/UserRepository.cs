@@ -2,7 +2,6 @@
 using HRManagementSystem.Data.Entities;
 using HRManagementSystem.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace HRManagementSystem.Repositories.Implementations
 {
@@ -19,6 +18,20 @@ namespace HRManagementSystem.Repositories.Implementations
         {
             return await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == username);
+        }
+
+        public async Task<User?> GetUserById(int id)
+        {
+            return await _context.Users
+                .Include(u => u.Employee)
+                .FirstOrDefaultAsync(u => u.UserId == id);
+        }
+
+        public async Task<List<User>> GetUsers()
+        {
+            return await _context.Users
+                .Include(u => u.Employee)
+                .ToListAsync();
         }
     }
 

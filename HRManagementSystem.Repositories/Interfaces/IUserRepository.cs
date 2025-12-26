@@ -10,5 +10,9 @@ namespace HRManagementSystem.Repositories.Interfaces
     public interface IUserRepository
     {
         Task<User?> GetUserByUsernameAsync(string username);
+        Task<User?> GetUserById(int id);
+
+        Task<List<User>> GetUsers();
+
     }
 }
