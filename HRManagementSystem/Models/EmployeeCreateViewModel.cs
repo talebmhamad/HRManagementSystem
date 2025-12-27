@@ -25,6 +25,7 @@ namespace HRManagementSystem.Web.Models
         [Required]
         public int DepartmentId { get; set; }
         public bool CreateUserAccount { get; set; }
+        public bool IsActive { get; set; }
         public List<SelectListItem> Departments { get; set; } = new();
     }
 }

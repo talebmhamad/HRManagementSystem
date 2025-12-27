@@ -8,6 +8,7 @@ namespace HRManagementSystem.Repositories.Interfaces
         Task<User?> GetUserByUsernameAsync(string username);
         Task<User?> GetUserById(int id);
         Task<List<User>> GetUsers();
+        Task<User> CreateUser(User user);
 
     }
 }

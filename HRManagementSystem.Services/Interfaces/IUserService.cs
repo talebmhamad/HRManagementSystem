@@ -6,5 +6,6 @@ namespace HRManagementSystem.Services.Interfaces
     {
         Task<List<UserDto>> GetAllAsync();
         Task<UserDto?> GetByIdAsync(int id);
+        Task<UserDto> AddUser(UserDto userDto);
     }
 }

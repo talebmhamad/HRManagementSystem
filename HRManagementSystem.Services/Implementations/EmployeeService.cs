@@ -14,7 +14,7 @@ namespace HRManagementSystem.Services.Implementations
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<EmployeeDto> AddEmployeeAsync(EmployeeDto dto)
+        public async Task<EmployeeDto> AddEmployee(EmployeeDto dto)
         {
             if (dto == null) { 
                 throw new ArgumentNullException(nameof(dto));
@@ -46,7 +46,7 @@ namespace HRManagementSystem.Services.Implementations
             return MapToDto(savedEmployee);
         }
 
-        public async Task<EmployeeDto?> UpdateEmployeeAsync(EmployeeDto dto)
+        public async Task<EmployeeDto?> UpdateEmployee(EmployeeDto dto)
         {
             if (dto == null)
             {
@@ -72,7 +72,7 @@ namespace HRManagementSystem.Services.Implementations
             return  MapToDto(updated);
         }
 
-        public async Task<EmployeeDto?> GetEmployeeByIdAsync(int employeeId)
+        public async Task<EmployeeDto?> GetEmployeeById(int employeeId)
         {
             if (employeeId <= 0)
             {
@@ -83,7 +83,7 @@ namespace HRManagementSystem.Services.Implementations
             return employee == null ? null : MapToDto(employee);
         }
 
-        public async Task<List<EmployeeDto>> GetAllEmployeesAsync()
+        public async Task<List<EmployeeDto>> GetAllEmployees()
         {
             var employees = await _employeeRepository.GetAllAsync();
 

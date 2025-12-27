@@ -4,9 +4,9 @@ namespace HRManagementSystem.Services.Interfaces
 {
     public interface IEmployeeService
     {
-        Task<EmployeeDto> AddEmployeeAsync(EmployeeDto employeeDto);
-        Task<EmployeeDto?> UpdateEmployeeAsync(EmployeeDto employeeDto);
-        Task<EmployeeDto?> GetEmployeeByIdAsync(int employeeId);
-        Task<List<EmployeeDto>> GetAllEmployeesAsync();
+        Task<EmployeeDto> AddEmployee(EmployeeDto employeeDto);
+        Task<EmployeeDto?> UpdateEmployee(EmployeeDto employeeDto);
+        Task<EmployeeDto?> GetEmployeeById(int employeeId);
+        Task<List<EmployeeDto>> GetAllEmployees();
     }
 }

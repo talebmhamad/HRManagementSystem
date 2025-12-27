@@ -39,7 +39,7 @@
             <span asp-validation-for="HireDate" class="text-danger"></span>
         </div>
 
- @*        <div class="col-md-6 mb-3">
+       <div class="col-md-6 mb-3">
             <label asp-for="DepartmentId" class="form-label"></label>
             <select asp-for="DepartmentId"
                     asp-items="Model.Departments"
@@ -47,13 +47,20 @@
                 <option value="">-- Select Department --</option>
             </select>
             <span asp-validation-for="DepartmentId" class="text-danger"></span>
-        </div> *@
+        </div> 
         <div class="form-check mt-3">
-            <input asp-for="CreateUserAccount" class="form-check-input" />
+            <input asp-for="CreateUserAccount" class="form-check-input" checked />
             <label asp-for="CreateUserAccount" class="form-check-label">
                 Create system user account for this employee
             </label>
         </div>
+
+            <div class="form-check mt-3">
+                <input asp-for="IsActive" class="form-check-input" checked />
+                <label asp-for="IsActive" class="form-check-label">
+                    Is Active
+                </label>
+            </div>
     </div>
 
     <div class="mt-4">
