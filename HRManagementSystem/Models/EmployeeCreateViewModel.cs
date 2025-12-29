@@ -5,6 +5,8 @@ namespace HRManagementSystem.Web.Models
 {
     public class EmployeeCreateViewModel
     {
+        public int EmployeeId { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; } = "";
@@ -17,15 +19,17 @@ namespace HRManagementSystem.Web.Models
         [EmailAddress]
         public string Email { get; set; } = "";
 
-        public string? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         public DateTime HireDate { get; set; }
 
         [Required]
         public int DepartmentId { get; set; }
+
         public bool CreateUserAccount { get; set; }
         public bool IsActive { get; set; }
+
         public List<SelectListItem> Departments { get; set; } = new();
     }
 }

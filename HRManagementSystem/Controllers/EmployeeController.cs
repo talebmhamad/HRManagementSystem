@@ -1,6 +1,5 @@
-﻿using HRManagementSystem.Data.DTOs;
-using HRManagementSystem.Services.Implementations;
-using HRManagementSystem.Services.Interfaces;
+﻿using HRManagementSystem.Services.Interfaces;
+using HRManagementSystem.Web.Mappers;
 using HRManagementSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,13 +9,11 @@ namespace HRManagementSystem.Web.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IUserService userService;
         private readonly IDepartmentService _departmentService;
 
-        public EmployeeController(IEmployeeService _employeeService,IUserService userService, IDepartmentService _departmentService)
+        public EmployeeController(IEmployeeService _employeeService, IDepartmentService _departmentService)
         { 
             this._employeeService = _employeeService;
-            this.userService = userService;
             this._departmentService = _departmentService;
         }
 
@@ -57,81 +54,67 @@ namespace HRManagementSystem.Web.Controllers
         }
 
         [HttpPost]
-        [Route("Add")]
-        public async Task<IActionResult> Add(EmployeeCreateViewModel employee)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(EmployeeCreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var dto = EmployeeViewModelMapper.ToDto(model);
+            var result = await _employeeService.AddEmployee(dto);
+
+            if (result == null)
+            {
+                ModelState.AddModelError("", "Failed to create employee.");
+                return View(model);
+            }
+
+            TempData["SuccessMessage"] = "Employee created successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var employeeDto = await _employeeService.GetEmployeeById(id);
+            if (employeeDto == null)
+                return NotFound();
+
+            var departments = await _departmentService.GetAllDepartment();
+
+            var model = EmployeeViewModelMapper.ToViewModel(employeeDto, departments);
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EmployeeCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(employee);
-            }
-
-            try
-            {
-                var dto = new EmployeeDto
+                var departments = await _departmentService.GetAllDepartment();
+                model.Departments = departments.Select(d => new SelectListItem
                 {
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    HireDate = employee.HireDate,
-                    DepartmentId = employee.DepartmentId,
-                    HasUserAccount = employee.CreateUserAccount,
-                    IsActive = employee.IsActive,
-                };
+                    Value = d.DepartmentId.ToString(),
+                    Text = d.Name
+                }).ToList();
 
-                if(dto.HasUserAccount)
-                {
-                    var userDto = new UserDto
-                    {
-                        Username = dto.Email,
-                        EmployeeId = dto.EmployeeId,
-                        IsActive = true,
-                    };
-                    await userService.AddUser(userDto);
-
-                }
-                
-                await _employeeService.AddEmployee(dto);
-
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
-            catch (Exception ex)
+
+            var dto = EmployeeViewModelMapper.ToDto(model);
+            var updated = await _employeeService.UpdateEmployee(dto);
+
+            if (updated == null)
             {
-                ModelState.AddModelError("", ex.Message);
-                return View(employee);
+                ModelState.AddModelError("", "Failed to update employee.");
+                return View(model);
             }
+
+            TempData["SuccessMessage"] = "Employee updated successfully.";
+            return RedirectToAction(nameof(Index));
         }
-
-
-
-
-
-
-
-
-
-
-        // GET: EmployeeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: EmployeeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
 
     }
 }

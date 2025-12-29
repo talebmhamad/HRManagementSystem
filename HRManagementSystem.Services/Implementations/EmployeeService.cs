@@ -1,76 +1,92 @@
 ﻿using HRManagementSystem.Data.DTOs;
-using HRManagementSystem.Data.Entities;
 using HRManagementSystem.Repositories.Interfaces;
 using HRManagementSystem.Services.Interfaces;
+using HRManagementSystem.Services.Mappers;
 
 namespace HRManagementSystem.Services.Implementations
 {
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
-
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        private readonly IUserService _userService;
+        public EmployeeService(IEmployeeRepository employeeRepository, IUserService userService)
         {
             _employeeRepository = employeeRepository;
+            _userService = userService;
         }
 
         public async Task<EmployeeDto> AddEmployee(EmployeeDto dto)
         {
-            if (dto == null) { 
+            if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
-            }
 
-            if (string.IsNullOrWhiteSpace(dto.FirstName)) 
-            { 
-                throw new ArgumentException("First name is required");
-            }
-            if (string.IsNullOrWhiteSpace(dto.Email))
+            try
             {
-                throw new Exception("Email is required");
+                var employee = EmployeeMapper.ToEntity(dto);
+                var savedEmployee = await _employeeRepository.AddAsync(employee);
+
+                if (dto.HasUserAccount)
+                {
+                    var userDto = new UserDto
+                    {
+                        Username = dto.Email,
+                        EmployeeId = savedEmployee.EmployeeId,
+                        IsActive = true,
+                        Role = "Employee",
+                        PasswordHash = dto.PhoneNumber 
+
+                    };
+
+                    await _userService.AddUser(userDto);
+                }
+
+                return EmployeeMapper.ToDto(savedEmployee);
             }
-
-            var employee = new Employee
+            catch (Exception ex)
             {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                PhoneNumber = dto.PhoneNumber,
-                HireDate = dto.HireDate,
-                DepartmentId = dto.DepartmentId,
-                IsActive = true,
-                HasUserAccount = false
-            };
-
-            var savedEmployee = await _employeeRepository.AddAsync(employee);
-
-            return MapToDto(savedEmployee);
+                // _logger.LogError(ex, "Error creating employee");
+                throw;
+            }
         }
 
         public async Task<EmployeeDto?> UpdateEmployee(EmployeeDto dto)
         {
             if (dto == null)
             {
-                throw new Exception("DTO NOT FOUND");
+                throw new ArgumentNullException(nameof(dto));
             }
 
             var existing = await _employeeRepository.GetByIdAsync(dto.EmployeeId);
             if (existing == null)
+            {
                 return null;
+            }
 
-            existing.FirstName = dto.FirstName;
-            existing.LastName = dto.LastName;
-            existing.Email = dto.Email;
-            existing.PhoneNumber = dto.PhoneNumber;
-            existing.IsActive = dto.IsActive;
-            existing.DepartmentId = dto.DepartmentId;
+            EmployeeMapper.UpdateEntity(existing, dto);
 
             var updated = await _employeeRepository.UpdateAsync(existing);
             if (updated == null)
             {
                 return null;
             }
-            return  MapToDto(updated);
+         
+            if (dto.HasUserAccount)
+            {
+                var userDto = new UserDto
+                {
+                    Username = dto.Email,
+                    EmployeeId = updated.EmployeeId,
+                    IsActive = true,
+                    Role = "Employee",
+                    PasswordHash = dto.PhoneNumber 
+                };
+
+                await _userService.AddUser(userDto);
+            }
+
+            return EmployeeMapper.ToDto(updated);
         }
+
 
         public async Task<EmployeeDto?> GetEmployeeById(int employeeId)
         {
@@ -80,33 +96,16 @@ namespace HRManagementSystem.Services.Implementations
             }
 
             var employee = await _employeeRepository.GetByIdAsync(employeeId);
-            return employee == null ? null : MapToDto(employee);
+            return employee == null ? null : EmployeeMapper.ToDto(employee);
         }
 
         public async Task<List<EmployeeDto>> GetAllEmployees()
         {
             var employees = await _employeeRepository.GetAllAsync();
 
-            return employees.Select(MapToDto).ToList();
+            return employees.Select(EmployeeMapper.ToDto).ToList();
         }
 
-        private static EmployeeDto MapToDto(Employee e)
-        {
-            return new EmployeeDto
-            {
-                EmployeeId = e.EmployeeId,
-                FirstName = e.FirstName,
-                LastName = e.LastName,
-                Email = e.Email,
-                PhoneNumber = e.PhoneNumber,
-                HireDate = e.HireDate,
-                IsActive = e.IsActive,
-                HasUserAccount = e.HasUserAccount,
-                DepartmentId = e.DepartmentId,
-                DepartmentName = e.Department?.Name ?? "",
-                ProfileImagePath = e.ProfileImagePath
-            };
-        }
 
     }
 }

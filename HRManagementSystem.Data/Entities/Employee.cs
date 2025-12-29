@@ -22,7 +22,7 @@ namespace HRManagementSystem.Data.Entities
         public string Email { get; set; } = null!;
 
         [MaxLength(20)]
-        public string? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         public DateTime HireDate { get; set; }
 
