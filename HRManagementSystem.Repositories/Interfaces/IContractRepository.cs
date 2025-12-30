@@ -9,6 +9,8 @@ namespace HRManagementSystem.Repositories.Interfaces
         Task<List<Contract>> GetAll();
         Task<Contract?> GetContractByid(int id);
 
+        Task<bool> HasContract(int employeeId);
+
 
     }
 }

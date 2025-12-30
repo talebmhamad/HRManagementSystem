@@ -13,6 +13,7 @@ namespace HRManagementSystem.Services.Mappers
             {
                 ContractId = entity.ContractId,
                 EmployeeId = entity.EmployeeId,
+                EmployeeName = $"{entity.Employee.FirstName} {entity.Employee.LastName}",
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
                 BaseSalary = entity.BaseSalary,
@@ -21,9 +22,8 @@ namespace HRManagementSystem.Services.Mappers
             };
         }
 
-        public static Contract? ToEntity(this ContractDto? dto)
+        public static Contract ToEntity(this ContractDto dto)
         {
-            if (dto is null) return null;
 
             return new Contract
             {

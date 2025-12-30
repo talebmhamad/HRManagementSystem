@@ -23,14 +23,12 @@ namespace HRManagementSystem.Services.Implementations
             if (user == null || !user.IsActive)
                 return null;
 
-            var result = _passwordHasher.VerifyHashedPassword(
-                user,
-                user.PasswordHash,
-                password
-            );
+            var result = _passwordHasher.VerifyHashedPassword(user,user.PasswordHash,password);
 
             if (result != PasswordVerificationResult.Success)
+            {
                 return null;
+            }
 
             return new UserDto
             {

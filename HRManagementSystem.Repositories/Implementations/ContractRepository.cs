@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HRManagementSystem.Repositories.Implementations
 {
-    public class ContractRepositry : IContractRepository
+    public class ContractRepository : IContractRepository
     {
         private readonly HRDbContext _context;
 
-        public ContractRepositry(HRDbContext _context)
+        public ContractRepository(HRDbContext _context)
         {
             this._context = _context;
         }
@@ -23,19 +23,25 @@ namespace HRManagementSystem.Repositories.Implementations
 
         public async Task<List<Contract>> GetAll()
         {
-           return await _context.Contracts.ToListAsync();
+           return await _context.Contracts.Include(c => c.Employee).ToListAsync();
         }
 
         public async Task<Contract?> GetContractByid(int id)
         {
-            return await _context.Contracts.FindAsync(id);
+            return await _context.Contracts.Include(c => c.Employee).FirstOrDefaultAsync(c => c.ContractId == id);
         }
 
         public async Task<Contract> Update(Contract contract)
         {
-            _context.Contracts.Add(contract);
+            _context.Contracts.Update(contract);
             await _context.SaveChangesAsync();
             return contract;
+        }
+
+        public async Task<bool> HasContract(int employeeId)
+        {
+            return await _context.Contracts
+                .AnyAsync(c => c.EmployeeId == employeeId && c.IsActive);
         }
     }
 }

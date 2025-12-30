@@ -1,12 +1,9 @@
-﻿
-namespace HRManagementSystem.Data.DTOs
+﻿namespace HRManagementSystem.Web.Models
 {
-    public class ContractDto
+    public class ContractViewModel
     {
         public int ContractId { get; set; }
-
-        public string EmployeeName { get; set; }    
-        public int EmployeeId { get; set; }
+        public string? EmployeeName { get; set; }
 
         public DateTime StartDate { get; set; }
 
