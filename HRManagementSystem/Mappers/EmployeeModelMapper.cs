@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRManagementSystem.Web.Mappers
 {
-    public static class EmployeeViewModelMapper
+    public static class EmployeeModelMapper
     {
         public static EmployeeDto ToDto(EmployeeCreateViewModel model)
         {
@@ -26,7 +26,22 @@ namespace HRManagementSystem.Web.Mappers
             };
         }
 
-        public static EmployeeCreateViewModel ToViewModel(EmployeeDto dto,IEnumerable<DepartmentDto> departments){
+        public static EmployeeViewModel ToViewModel(EmployeeDto dto)
+        {
+            if (dto == null) return null!;
+
+            return new EmployeeViewModel
+            {
+                EmployeeId = dto.EmployeeId,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                IsActive = dto.IsActive,
+                Department = dto.DepartmentName,
+            };
+        }
+
+public static EmployeeCreateViewModel ToCreateViewModel(EmployeeDto dto,IEnumerable<DepartmentDto> departments){
 
             if (dto == null)
             {

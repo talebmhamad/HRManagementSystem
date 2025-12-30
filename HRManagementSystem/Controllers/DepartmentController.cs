@@ -1,5 +1,6 @@
 ﻿using HRManagementSystem.Data.DTOs;
 using HRManagementSystem.Services.Interfaces;
+using HRManagementSystem.Web.Mappers;
 using HRManagementSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,11 +43,8 @@ namespace HRManagementSystem.Web.Controllers
                 {
                     return View(department);
                 }
-                var dto = new DepartmentDto
-                {
-                    Name = department.Name,
-                    Description = department.Description
-                };
+
+                var dto = DepartmentModelMapper.ToDto(department);
                 await departmentService.AddDepartment(dto);
 
                 return RedirectToAction(nameof(Index));
@@ -69,12 +67,7 @@ namespace HRManagementSystem.Web.Controllers
             if (department == null)
                 return NotFound();
 
-            var model = new DepartmentViewModel
-            {
-                Id = department.DepartmentId,
-                Name = department.Name,
-                Description = department.Description
-            };
+            var model = DepartmentModelMapper.ToViewModel(department);
 
             return View(model);
         }
@@ -87,12 +80,7 @@ namespace HRManagementSystem.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var dto = new DepartmentDto
-            {
-                DepartmentId = model.Id,
-                Name = model.Name,
-                Description = model.Description
-            };
+            var dto = DepartmentModelMapper.ToDto(model);
 
             var updated = await departmentService.UpdateDepartment(dto);
 

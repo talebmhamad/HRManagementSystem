@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRManagementSystem.Data.Entities
 {
@@ -19,12 +20,12 @@ namespace HRManagementSystem.Data.Entities
         public decimal BaseSalary { get; set; }
 
         [Required]
-        public string status { get; set; } = null!;
+        public bool IsActive { get; set; } = true!;
 
-        [Required]
-        [MaxLength(50)]
-        public string ContractType { get; set; } = null!;
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime CreatedAt { get; set; }
 
         public Employee Employee { get; set; } = null!;
+
     }
 }

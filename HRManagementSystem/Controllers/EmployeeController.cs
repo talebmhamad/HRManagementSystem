@@ -19,20 +19,11 @@ namespace HRManagementSystem.Web.Controllers
 
         public ActionResult Index()
         {
-            var employees =  _employeeService.GetAllEmployees().Result;
+            var employeesDto =  _employeeService.GetAllEmployees().Result;
 
-            var model = employees.Select(u => new EmployeeViewModel
-            {
-                EmployeeId = u.EmployeeId,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-                IsActive = u.IsActive,
-                HasUserAccount = u.HasUserAccount,
-                Department = u.DepartmentName ?? "—"
-            }).ToList();
+            var employeeView= employeesDto.Select(EmployeeModelMapper.ToViewModel).ToList();
 
-            return View(model);
+            return View(employeeView);
 
 
         }
@@ -60,7 +51,7 @@ namespace HRManagementSystem.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var dto = EmployeeViewModelMapper.ToDto(model);
+            var dto = EmployeeModelMapper.ToDto(model);
             var result = await _employeeService.AddEmployee(dto);
 
             if (result == null)
@@ -81,7 +72,7 @@ namespace HRManagementSystem.Web.Controllers
 
             var departments = await _departmentService.GetAllDepartment();
 
-            var model = EmployeeViewModelMapper.ToViewModel(employeeDto, departments);
+            var model = EmployeeModelMapper.ToCreateViewModel(employeeDto, departments);
 
             return View(model);
         }
@@ -103,7 +94,7 @@ namespace HRManagementSystem.Web.Controllers
                 return View(model);
             }
 
-            var dto = EmployeeViewModelMapper.ToDto(model);
+            var dto = EmployeeModelMapper.ToDto(model);
             var updated = await _employeeService.UpdateEmployee(dto);
 
             if (updated == null)
