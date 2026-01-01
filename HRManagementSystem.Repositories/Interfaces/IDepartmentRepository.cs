@@ -11,5 +11,7 @@ namespace HRManagementSystem.Repositories.Interfaces
         Task<Department?> GetDepartmentById(int departmentId);  
 
         Task<bool> DeleteDepartment(int departmentId);
+        Task<int> CountDepartments();
+
     }
 }

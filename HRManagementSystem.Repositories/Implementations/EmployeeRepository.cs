@@ -1,17 +1,20 @@
 ﻿using HRManagementSystem.Data;
 using HRManagementSystem.Data.Entities;
 using HRManagementSystem.Repositories.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace HRManagementSystem.Repositories.Implementations
 {
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly HRDbContext _context;
-
-        public EmployeeRepository(HRDbContext context)
+        private readonly string _connectionString;
+        public EmployeeRepository(HRDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException("DefaultConnection string is not configured.");
         }
 
         public async Task<Employee> AddAsync(Employee employee)
@@ -49,5 +52,38 @@ namespace HRManagementSystem.Repositories.Implementations
 
             return existing;
         }
+
+        public async Task<int> CountActiveEmployeesAsync()
+        {
+            int count = 0;
+
+            using (var con = new SqlConnection(_connectionString))
+            {
+                using (var cmd = new SqlCommand(
+                    "SELECT COUNT(*) FROM Employees WHERE IsActive = 1", con))
+                {
+                    await con.OpenAsync();
+                    count = Convert.ToInt16(await cmd.ExecuteScalarAsync());
+                }
+            }
+
+            return count;
+        }
+
+        public async Task<int> CountEmployeesAsync()
+        {
+            int count = 0;
+            using (var con = new SqlConnection(_connectionString))
+            {
+                using (var cmd = new SqlCommand(
+                    "SELECT COUNT(*) FROM Employees", con))
+                {
+                    await con.OpenAsync();
+                    count = Convert.ToInt16(await cmd.ExecuteScalarAsync());
+                }
+            }
+            return count;
+        }
+
     }
 }

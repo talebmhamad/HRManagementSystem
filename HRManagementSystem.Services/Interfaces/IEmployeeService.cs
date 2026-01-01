@@ -8,5 +8,8 @@ namespace HRManagementSystem.Services.Interfaces
         Task<EmployeeDto?> UpdateEmployee(EmployeeDto employeeDto);
         Task<EmployeeDto?> GetEmployeeById(int employeeId);
         Task<List<EmployeeDto>> GetAllEmployees();
+
+        Task<int> GetTotalEmployeeCount();  
+         Task<int> GetActiveEmployeeCount();
     }
 }

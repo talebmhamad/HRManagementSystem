@@ -11,6 +11,9 @@ namespace HRManagementSystem.Repositories.Interfaces
 
         Task<bool> HasContract(int employeeId);
 
+        Task<int> CountExpiringContracts();
+
+
 
     }
 }

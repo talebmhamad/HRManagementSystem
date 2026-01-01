@@ -106,6 +106,16 @@ namespace HRManagementSystem.Services.Implementations
             return employees.Select(EmployeeMapper.ToDto).ToList();
         }
 
+        public async Task<int> GetTotalEmployeeCount()
+        {
+            return await _employeeRepository.CountEmployeesAsync();
+        }
+
+        public async Task<int> GetActiveEmployeeCount()
+        {
+            return await _employeeRepository.CountActiveEmployeesAsync();
+        }
+
 
     }
 }

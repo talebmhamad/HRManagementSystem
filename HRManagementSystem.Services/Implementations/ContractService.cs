@@ -63,5 +63,10 @@ namespace HRManagementSystem.Services.Implementations
 
         }
 
+        public async Task<int> CountExpiringContracts()
+        {
+            return await _contractRepository.CountExpiringContracts();
+        }
+
     }
 }

@@ -10,5 +10,6 @@ namespace HRManagementSystem.Services.Interfaces
         Task<DepartmentDto?> UpdateDepartment(DepartmentDto departmentDto);
         Task <bool> DeleteDepartment(int departmentId);
         Task<DepartmentDto?> GetDepartmentById(int departmentId);
+         Task<int> CountDepartments();
     }
 }

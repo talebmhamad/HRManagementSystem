@@ -82,5 +82,10 @@ namespace HRManagementSystem.Services.Implementations
                 Description = department.Description
             };
         }
+
+        public async Task<int> CountDepartments()
+        {
+            return await _departmentRepository.CountDepartments();
+        }
     }
 }

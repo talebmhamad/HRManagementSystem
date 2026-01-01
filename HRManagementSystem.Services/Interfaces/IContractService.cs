@@ -9,5 +9,7 @@ namespace HRManagementSystem.Services.Interfaces
         Task<List<ContractDto>> GetAll();
         Task<ContractDto?> GetContractByid(int id);
         Task<bool> HasContract(int employeeId);
+
+        Task<int> CountExpiringContracts();
     }
 }
