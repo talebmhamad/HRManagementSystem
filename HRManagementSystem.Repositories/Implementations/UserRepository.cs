@@ -16,35 +16,45 @@ namespace HRManagementSystem.Repositories.Implementations
 
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == username);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
 
         public async Task<User?> GetUserById(int id)
         {
-            return await _context.Users
-                .Include(u => u.Employee)
-                .FirstOrDefaultAsync(u => u.UserId == id);
+            return await _context.Users.Include(u => u.Employee).FirstOrDefaultAsync(u => u.UserId == id);
         }
 
         public async Task<List<User>> GetUsers()
         {
-            return await _context.Users
-                .Include(u => u.Employee)
-                .ToListAsync();
+            return await _context.Users.Include(u => u.Employee).ToListAsync();
         }
         public async Task<User> CreateUser(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return user;
+            try
+            {
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                return user;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
+
         }
 
         public async Task<User> UpdateUser(User user)
         {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
-            return user;
+            try
+            {
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                return user;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
     }
 

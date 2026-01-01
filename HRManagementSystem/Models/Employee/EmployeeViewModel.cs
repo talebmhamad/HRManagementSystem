@@ -1,6 +1,4 @@
-﻿
-
-namespace HRManagementSystem.Web.Models
+﻿namespace HRManagementSystem.Web.Models.Employee
 {
     public class EmployeeViewModel
     {

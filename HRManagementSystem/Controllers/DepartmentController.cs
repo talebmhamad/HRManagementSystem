@@ -1,7 +1,6 @@
-﻿using HRManagementSystem.Data.DTOs;
-using HRManagementSystem.Services.Interfaces;
+﻿using HRManagementSystem.Services.Interfaces;
 using HRManagementSystem.Web.Mappers;
-using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.Department;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRManagementSystem.Web.Controllers
@@ -13,12 +12,11 @@ namespace HRManagementSystem.Web.Controllers
         {
             this.departmentService = departmentService;
         }
-
         public async Task<IActionResult> Index()
         {
             var departments = await departmentService.GetAllDepartment();
 
-            var model = departments.Select(d => new Models.DepartmentViewModel
+            var model = departments.Select(d => new Models.Department.DepartmentViewModel
             {
                 Id = d.DepartmentId,
                 Name = d.Name,
@@ -27,7 +25,6 @@ namespace HRManagementSystem.Web.Controllers
 
             return View(model);
         }
-
         public ActionResult Create()
         {
             return View();
@@ -35,57 +32,56 @@ namespace HRManagementSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(DepartmentViewModel department )
+        public async Task<IActionResult> Create(DepartmentViewModel department)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(department);
-                }
-
-                var dto = DepartmentModelMapper.ToDto(department);
-                await departmentService.AddDepartment(dto);
-
-                return RedirectToAction(nameof(Index));
+                return View(department);
             }
-            catch
-            {
-                return View();
-            }
+
+            var dto = DepartmentModelMapper.ToDto(department);
+            await departmentService.AddDepartment(dto);
+
+            return RedirectToAction(nameof(Index));
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             if (id <= 0)
+            {
                 return BadRequest();
+            }
 
             var department = await departmentService.GetDepartmentById(id);
 
             if (department == null)
+            {
                 return NotFound();
+            }
 
             var model = DepartmentModelMapper.ToViewModel(department);
 
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(DepartmentViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+            { 
+            return View(model);
+            }
 
             var dto = DepartmentModelMapper.ToDto(model);
 
             var updated = await departmentService.UpdateDepartment(dto);
 
             if (updated == null)
+            {
                 return NotFound();
+            }
 
             return RedirectToAction(nameof(Index));
         }

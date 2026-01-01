@@ -17,54 +17,85 @@ namespace HRManagementSystem.Repositories.Implementations
             _context = context;
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException("DefaultConnection string is not configured.");
         }
-
         public async Task<List<Department>> GetDepartments()
         {
-            return await _context.Departments.ToListAsync();
+            
+          return await _context.Departments.ToListAsync();
+         
         }
         public async Task<Department> AddDepartment(Department department)
         {
-            _context.Departments.Add(department);
-            await _context.SaveChangesAsync();
-            return department;
+            try
+            {
+                _context.Departments.Add(department);
+                await _context.SaveChangesAsync();
+                return department;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
         public async Task<Department?> UpdateDepartment(Department department)
         {
-            _context.Departments.Update(department);
-            await _context.SaveChangesAsync();
-            return department;
+            try
+            {
+                _context.Departments.Update(department);
+                await _context.SaveChangesAsync();
+                return department;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
         public async Task<bool> DeleteDepartment(int departmentId)
         {
-            var department = await _context.Departments.FindAsync(departmentId);
-            if (department == null)
+            try
             {
-                return false;
+                var department = await _context.Departments.FindAsync(departmentId);
+                if (department == null)
+                {
+                    return false;
+                }
+                _context.Departments.Remove(department);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Departments.Remove(department);
-            await _context.SaveChangesAsync();
-            return true;
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
-
         public async Task<Department?> GetDepartmentById(int departmentId)
         {
-            return await _context.Departments.FindAsync(departmentId);
+            try
+            {
+                return await _context.Departments.FindAsync(departmentId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
-
         public async Task<int> CountDepartments()
         {
+
             int count = 0;
-            using(var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT COUNT(*) FROM Departments";
                     var result = await command.ExecuteScalarAsync();
-                    if (result != null) { count = Convert.ToInt16(result); };
+                    if (result != null) { count = Convert.ToInt16(result); }
+                    ;
                     return count;
                 }
             }
+        
+
         }
     }
 }

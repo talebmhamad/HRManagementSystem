@@ -1,4 +1,4 @@
-﻿namespace HRManagementSystem.Web.Models
+﻿namespace HRManagementSystem.Web.Models.Contract
 {
     public class ContractViewModel
     {

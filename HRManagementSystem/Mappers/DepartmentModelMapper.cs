@@ -1,5 +1,5 @@
 ﻿using HRManagementSystem.Data.DTOs;
-using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.Department;
 
 namespace HRManagementSystem.Web.Mappers
 {

@@ -4,6 +4,7 @@ using HRManagementSystem.Repositories.Implementations;
 using HRManagementSystem.Repositories.Interfaces;
 using HRManagementSystem.Services.Implementations;
 using HRManagementSystem.Services.Interfaces;
+using HRManagementSystem.Web.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IContractRepository, ContractRepository>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+
 
 // Services
 builder.Services.AddScoped<IUserService, UserService>();
@@ -29,28 +32,28 @@ builder.Services.AddScoped<IContractService, ContractService>();
 builder.Services.AddAuthentication("Cookies").AddCookie("Cookies", options =>{options.LoginPath = "/Auth/Index";options.LogoutPath = "/Auth/Logout";});
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+
 builder.Services.AddEndpointsApiExplorer();
 
 
-// 🔑 Password hashing
+//  Password hashing
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 var app = builder.Build();
 
-// Pipeline
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-}
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseStaticFiles();
-app.UseRouting();
-app.UseAuthorization();
-app.UseAuthentication();
 
-// Default → Login
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Index}/{id?}");
 
 app.Run();
+

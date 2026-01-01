@@ -1,5 +1,5 @@
 ﻿using HRManagementSystem.Services.Interfaces;
-using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 

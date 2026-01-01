@@ -20,33 +20,25 @@ namespace HRManagementSystem.Services.Implementations
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
 
-            try
-            {
-                var employee = EmployeeMapper.ToEntity(dto);
-                var savedEmployee = await _employeeRepository.AddAsync(employee);
+            var employee = EmployeeMapper.ToEntity(dto);
+            var savedEmployee = await _employeeRepository.AddAsync(employee);
 
-                if (dto.HasUserAccount)
+            if (dto.HasUserAccount)
+            {
+                var userDto = new UserDto
                 {
-                    var userDto = new UserDto
-                    {
-                        Username = dto.Email,
-                        EmployeeId = savedEmployee.EmployeeId,
-                        IsActive = true,
-                        Role = "Employee",
-                        PasswordHash = dto.PhoneNumber 
+                    Username = dto.Email,
+                    EmployeeId = savedEmployee.EmployeeId,
+                    IsActive = true,
+                    Role = "Employee",
+                    Password = dto.PhoneNumber
 
-                    };
+                };
 
-                    await _userService.AddUser(userDto);
-                }
-
-                return EmployeeMapper.ToDto(savedEmployee);
+                await _userService.AddUser(userDto);
             }
-            catch (Exception ex)
-            {
-                // _logger.LogError(ex, "Error creating employee");
-                throw;
-            }
+
+            return EmployeeMapper.ToDto(savedEmployee);
         }
 
         public async Task<EmployeeDto?> UpdateEmployee(EmployeeDto dto)
@@ -78,7 +70,7 @@ namespace HRManagementSystem.Services.Implementations
                     EmployeeId = updated.EmployeeId,
                     IsActive = true,
                     Role = "Employee",
-                    PasswordHash = dto.PhoneNumber 
+                    Password = dto.PhoneNumber 
                 };
 
                 await _userService.AddUser(userDto);
@@ -92,7 +84,7 @@ namespace HRManagementSystem.Services.Implementations
         {
             if (employeeId <= 0)
             {
-                throw new Exception("Invalid employee ID");
+                throw new ArgumentException("Invalid employee ID", nameof(employeeId));
             }
 
             var employee = await _employeeRepository.GetByIdAsync(employeeId);

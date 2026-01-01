@@ -1,5 +1,6 @@
 ﻿using HRManagementSystem.Data.DTOs;
 using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.User;
 
 namespace HRManagementSystem.Web.Mappers
 {
@@ -29,7 +30,7 @@ namespace HRManagementSystem.Web.Mappers
                 Username = model.Username,
                 Role = model.Role,
                 IsActive = model.IsActive,
-                PasswordHash = model.Password ?? string.Empty
+                Password = model.Password ?? string.Empty
 
             };
         }

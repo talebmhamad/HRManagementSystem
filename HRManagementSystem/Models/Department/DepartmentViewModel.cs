@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HRManagementSystem.Web.Models
+namespace HRManagementSystem.Web.Models.Department
 {
     public class DepartmentViewModel
     {

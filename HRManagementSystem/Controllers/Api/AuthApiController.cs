@@ -1,5 +1,5 @@
 ﻿using HRManagementSystem.Services.Interfaces;
-using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRManagementSystem.Web.Controllers.Api

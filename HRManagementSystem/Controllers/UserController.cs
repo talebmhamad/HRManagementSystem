@@ -23,36 +23,47 @@ namespace HRManagementSystem.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Edit(int id)
+
+        public async Task<IActionResult> Edit(int id)
         {
-            var userDto =  _userService.GetById(id).Result;
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            var userDto = await _userService.GetById(id);
             if (userDto == null)
             {
                 return NotFound();
             }
-            var model = UserModelMapper.ToEditViewModel(userDto!);
 
+            var model = UserModelMapper.ToEditViewModel(userDto);
             return View(model);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(UserEditViewModel model)
+        public async Task<IActionResult> Edit(UserEditViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
             var dto = UserModelMapper.ToDto(model);
-            var result =  _userService.UpdateUser(dto).Result;
+            var result = await _userService.UpdateUser(dto);
+
             if (result == null)
             {
                 ModelState.AddModelError("", "Failed to update user.");
                 return View(model);
             }
+
             TempData["SuccessMessage"] = "User updated successfully.";
             return RedirectToAction(nameof(Index));
         }
+
 
 
 

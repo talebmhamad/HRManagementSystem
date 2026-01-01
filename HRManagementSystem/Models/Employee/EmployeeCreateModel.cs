@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace HRManagementSystem.Web.Models
+namespace HRManagementSystem.Web.Models.Employee
 {
-    public class EmployeeCreateViewModel
+    public class EmployeeCreateModel
     {
         public int EmployeeId { get; set; }
 

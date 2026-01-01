@@ -1,12 +1,12 @@
 ﻿using HRManagementSystem.Data.DTOs;
-using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.Employee;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRManagementSystem.Web.Mappers
 {
     public static class EmployeeModelMapper
     {
-        public static EmployeeDto ToDto(EmployeeCreateViewModel model)
+        public static EmployeeDto ToDto(EmployeeCreateModel model)
         {
             if (model == null) { 
                 throw new ArgumentNullException(nameof(model));
@@ -41,14 +41,14 @@ namespace HRManagementSystem.Web.Mappers
             };
         }
 
-public static EmployeeCreateViewModel ToCreateViewModel(EmployeeDto dto,IEnumerable<DepartmentDto> departments){
+public static EmployeeCreateModel ToCreateViewModel(EmployeeDto dto,IEnumerable<DepartmentDto> departments){
 
             if (dto == null)
             {
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            return new EmployeeCreateViewModel
+            return new EmployeeCreateModel
             {
                 EmployeeId = dto.EmployeeId,
                 FirstName = dto.FirstName,

@@ -1,0 +1,77 @@
+﻿@using HRManagementSystem.Web.Models.Attendance
+@model List<AttendanceViewModel>
+
+@{
+    ViewData["Title"] = "Attendance Summary";
+}
+
+<div class="container mt-4">
+
+    <h2 class="text-primary mb-3">Attendance Summary</h2>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label class="form-label">From</label>
+            <input type="date" name="startDate"
+                   value="@ViewBag.StartDate"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">To</label>
+            <input type="date" name="endDate"
+                   value="@ViewBag.EndDate"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">
+                Filter
+            </button>
+        </div>
+    </form>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.EmployeeName</td>
+                                <td>@item.AttendanceDate.ToString("yyyy-MM-dd")</td>
+                                <td>@item.CheckInTime?.ToString("HH:mm")</td>
+                                <td>@item.CheckOutTime?.ToString("HH:mm")</td>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        @item.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No attendance records found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -19,48 +19,74 @@ namespace HRManagementSystem.Repositories.Implementations
 
         public async Task<Contract> Create(Contract contract)
         {
-            _context.Contracts.Add(contract);
-            await _context.SaveChangesAsync();
-            return contract;
+            try
+            {
+                _context.Contracts.Add(contract);
+                await _context.SaveChangesAsync();
+                return contract;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
 
         public async Task<List<Contract>> GetAll()
         {
+
             return await _context.Contracts.Include(c => c.Employee).ToListAsync();
+        
         }
 
         public async Task<Contract?> GetContractByid(int id)
         {
+
             return await _context.Contracts.Include(c => c.Employee).FirstOrDefaultAsync(c => c.ContractId == id);
+        
         }
 
         public async Task<Contract> Update(Contract contract)
         {
-            _context.Contracts.Update(contract);
-            await _context.SaveChangesAsync();
-            return contract;
+            try
+            {
+                _context.Contracts.Update(contract);
+                await _context.SaveChangesAsync();
+                return contract;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> HasContract(int employeeId)
         {
-            return await _context.Contracts
-                .AnyAsync(c => c.EmployeeId == employeeId && c.IsActive);
+
+            return await _context.Contracts.AnyAsync(c => c.EmployeeId == employeeId && c.IsActive);
+        
         }
 
         public async Task<int> CountExpiringContracts()
         {
-            int count = 0;
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
-                await connection.OpenAsync();
-                using (var command = connection.CreateCommand())
+                int count = 0;
+                using (var connection = new SqlConnection(_connectionString))
                 {
-                    command.CommandText = "SELECT COUNT(*) FROM Contracts where IsActive = 0 ";
-                    var result = await command.ExecuteScalarAsync();
-                    if (result != null) { count = Convert.ToInt16(result); }
-                    ;
-                    return count;
+                    await connection.OpenAsync();
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = "SELECT COUNT(*) FROM Contracts where IsActive = 0 ";
+                        var result = await command.ExecuteScalarAsync();
+                        if (result != null) { count = Convert.ToInt16(result); }
+                        ;
+                        return count;
+                    }
                 }
+            }
+            catch (SqlException)
+            {
+                throw;
             }
         }
     }

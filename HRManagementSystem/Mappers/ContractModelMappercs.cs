@@ -1,5 +1,6 @@
 ﻿using HRManagementSystem.Data.DTOs;
 using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.Contract;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRManagementSystem.Web.Mappers

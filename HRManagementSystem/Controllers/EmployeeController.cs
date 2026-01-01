@@ -1,6 +1,6 @@
 ﻿using HRManagementSystem.Services.Interfaces;
 using HRManagementSystem.Web.Mappers;
-using HRManagementSystem.Web.Models;
+using HRManagementSystem.Web.Models.Employee;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -17,22 +17,18 @@ namespace HRManagementSystem.Web.Controllers
             this._departmentService = _departmentService;
         }
 
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var employeesDto =  _employeeService.GetAllEmployees().Result;
-
-            var employeeView= employeesDto.Select(EmployeeModelMapper.ToViewModel).ToList();
-
+            var employeesDto = await _employeeService.GetAllEmployees();
+            var employeeView = employeesDto.Select(EmployeeModelMapper.ToViewModel).ToList();
             return View(employeeView);
-
-
         }
 
         public async Task<IActionResult> Create()
         {
             var departments = await _departmentService.GetAllDepartment();
 
-            var model = new EmployeeCreateViewModel
+            var model = new EmployeeCreateModel
             {
                 Departments = departments.Select(d => new SelectListItem
                 {
@@ -46,10 +42,12 @@ namespace HRManagementSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EmployeeCreateViewModel model)
+        public async Task<IActionResult> Create(EmployeeCreateModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
 
             var dto = EmployeeModelMapper.ToDto(model);
             var result = await _employeeService.AddEmployee(dto);
@@ -68,7 +66,9 @@ namespace HRManagementSystem.Web.Controllers
         {
             var employeeDto = await _employeeService.GetEmployeeById(id);
             if (employeeDto == null)
+            {
                 return NotFound();
+            }
 
             var departments = await _departmentService.GetAllDepartment();
 
@@ -80,7 +80,7 @@ namespace HRManagementSystem.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EmployeeCreateViewModel model)
+        public async Task<IActionResult> Edit(EmployeeCreateModel model)
         {
             if (!ModelState.IsValid)
             {
