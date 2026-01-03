@@ -35,7 +35,8 @@ namespace HRManagementSystem.Services.Implementations
                 UserId = user.UserId,
                 Username = user.Username,
                 Role = user.Role,
-                IsActive = user.IsActive
+                IsActive = user.IsActive,
+                EmployeeId = user.EmployeeId,
             };
         }
     }
