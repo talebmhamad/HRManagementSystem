@@ -56,6 +56,32 @@ namespace HRManagementSystem.Repositories.Implementations
                 throw;
             }
         }
+
+        public async Task<bool> DeactivateUser(int id)
+        {
+            try
+            {
+
+                var user = await _context.Users.FindAsync(id);
+
+                if (user == null)
+                {
+                    return false;
+                }
+
+                user.IsActive = false;
+
+                _context.Users.Update(user);
+                return true;
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
+
+
+        }
+
     }
 
 
