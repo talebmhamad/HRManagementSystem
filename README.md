@@ -162,8 +162,6 @@ The backend exposes API-ready endpoints that can be consumed by a **Flutter appl
 
 ##  Future Work
 
-- JWT authentication for Flutter clients
-- Dedicated API controllers (Swagger documented)
 - Advanced attendance analytics & reports
 - Unit & integration testing (xUnit)
 - Role-based authorization policies
