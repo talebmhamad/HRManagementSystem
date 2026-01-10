@@ -78,7 +78,7 @@ namespace HRManagementSystem.Repositories.Implementations
                 await connection.OpenAsync();
 
                 using var command = new SqlCommand(
-                    @"INSERT INTO Attendances (EmployeeId,AttendanceDate, CheckIn, CheckOut, Status)
+                    @"INSERT INTO Attendances (EmployeeId,AttendanceDate,CheckInTime, CheckOutTime, Status)
           VALUES (@EmployeeId,@AttendanceDate, @CheckIn, @CheckOut, @Status)",
                     connection);
 
@@ -116,7 +116,7 @@ namespace HRManagementSystem.Repositories.Implementations
 FROM Attendances a
 INNER JOIN Employees e 
     ON a.EmployeeId = e.EmployeeId
-          WHERE Date BETWEEN @StartDate AND @EndDate",
+          WHERE AttendanceDate BETWEEN @StartDate AND @EndDate",
                     connection);
                 command.Parameters.AddWithValue("@StartDate", startDate);
                 command.Parameters.AddWithValue("@EndDate", endDate);
@@ -141,67 +141,48 @@ INNER JOIN Employees e
                 throw;
             }
         }
-
         public async Task<bool> CheckAttendance(int employeeId, DateTime date)
         {
-            try
-            {
-                using var connection = new SqlConnection(connectionString);
-                await connection.OpenAsync();
+            using var connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
 
-                using var command = new SqlCommand(
-                    @"SELECT COUNT(1)
+            using var command = new SqlCommand(
+                @"SELECT COUNT(1)
           FROM Attendances
           WHERE EmployeeId = @EmployeeId
-            AND CAST([Date] AS date) = @Date
-            AND Status = @Status",
-                    connection);
+            AND CAST([AttendanceDate] AS date) = @Date
+            AND CheckInTime IS NOT NULL
+            AND CheckOutTime IS NULL",
+                connection);
 
-                command.Parameters.Add("@EmployeeId", SqlDbType.Int).Value = employeeId;
-                command.Parameters.Add("@Date", SqlDbType.Date).Value = date.Date;
-                command.Parameters.Add("@Status", SqlDbType.NVarChar).Value = "CheckIn";
+            command.Parameters.Add("@EmployeeId", SqlDbType.Int).Value = employeeId;
+            command.Parameters.Add("@Date", SqlDbType.Date).Value = date.Date;
 
-                var count = Convert.ToInt16(await command.ExecuteScalarAsync());
-                return count > 0;
-            }
-            catch (SqlException)
-            {
-                throw;
-            }
+            var count = (int)await command.ExecuteScalarAsync();
+            return count > 0;
         }
 
         public async Task<bool> UpdateAttendance(Attendance attendance)
         {
-            try
-            {
-                using var connection = new SqlConnection(connectionString);
-                await connection.OpenAsync();
+            using var connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
 
-                using var command = new SqlCommand(
-                    @"UPDATE Attendances
-          SET CheckOut = @CheckOut,
-              Status = @Status
+            using var command = new SqlCommand(
+                @"UPDATE Attendances
+          SET CheckOutTime = @CheckOut
           WHERE EmployeeId = @EmployeeId
-            AND CAST([Date] AS date) = @Date
-            AND CheckOut IS NULL",
-                    connection);
+            AND CAST(AttendanceDate AS date) = @Date
+            AND CheckOutTime IS NULL",
+                connection);
 
-                command.Parameters.AddWithValue("@EmployeeId", attendance.EmployeeId);
+            command.Parameters.AddWithValue("@EmployeeId", attendance.EmployeeId);
+            command.Parameters.AddWithValue("@Date", attendance.AttendanceDate.Date);
+            command.Parameters.AddWithValue("@CheckOut", attendance.CheckOutTime);
 
-                command.Parameters.AddWithValue("@Date", attendance.AttendanceDate);
-
-                command.Parameters.AddWithValue("@CheckOut", attendance.CheckOutTime);
-
-                command.Parameters.AddWithValue("@Status", "CheckOut");
-
-                var rows = await command.ExecuteNonQueryAsync();
-                return rows > 0;
-            }
-            catch (SqlException)
-            {
-                throw;
-            }
+            var rows = await command.ExecuteNonQueryAsync();
+            return rows > 0;
         }
+
 
         public async Task<AttendanceSummaryDto> GetDailySummary(DateTime date)
         {

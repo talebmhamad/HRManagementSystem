@@ -38,6 +38,8 @@ namespace HRManagementSystem.Web.Mappers
                 Email = dto.Email,
                 IsActive = dto.IsActive,
                 Department = dto.DepartmentName,
+                phone = dto.PhoneNumber,
+                
             };
         }
 

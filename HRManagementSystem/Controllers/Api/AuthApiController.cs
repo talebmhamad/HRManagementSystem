@@ -24,7 +24,7 @@ namespace HRManagementSystem.Web.Controllers.Api
                 return Unauthorized(new { message = "Invalid credentials" });
             }
 
-            return Ok(new{user.UserId,user.Username,user.Role});
+            return Ok(new{user.UserId,user.Username,user.Role,user.EmployeeId});
         }
     }
 }

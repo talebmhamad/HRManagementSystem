@@ -35,13 +35,20 @@ builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 builder.Services.AddEndpointsApiExplorer();
-
+builder.Services.AddSwaggerGen();
 
 //  Password hashing
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-
+builder.WebHost.UseUrls(
+    "http://localhost:5268",
+    "http://0.0.0.0:5268"
+);
 var app = builder.Build();
-
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseStaticFiles();

@@ -9,6 +9,7 @@
         public string? LastName { get; set; } 
 
         public string? Email { get; set; } 
+        public string? phone { get; set; }
 
         public bool IsActive { get; set; }
 

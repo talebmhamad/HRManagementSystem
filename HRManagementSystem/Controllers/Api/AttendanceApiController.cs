@@ -32,7 +32,6 @@ namespace HRManagementSystem.Web.Controllers.Api
         
         }
 
-        //   check-in
         [HttpPost("check")]
         public async Task<IActionResult> CheckAttendance([FromBody] AttendanceDto attendance)
         {
@@ -52,25 +51,6 @@ namespace HRManagementSystem.Web.Controllers.Api
         
         }
 
-        //   check-out
-        [HttpPut("checkout")]
-        public async Task<IActionResult> CheckOut([FromBody] AttendanceDto attendance)
-        {
-
-            if (attendance == null)
-            {
-                return BadRequest("Attendance data is required");
-            }
-
-            if (attendance.EmployeeId <= 0)
-            {
-                return BadRequest("Invalid employee id");
-            }
-
-            var result = await _attendanceService.AddAttendanceAsync(attendance);
-
-            return Ok(result);
-        
-        }
+      
     }
 }
