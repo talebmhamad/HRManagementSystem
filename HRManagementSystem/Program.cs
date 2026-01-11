@@ -5,6 +5,7 @@ using HRManagementSystem.Repositories.Interfaces;
 using HRManagementSystem.Services.Implementations;
 using HRManagementSystem.Services.Interfaces;
 using HRManagementSystem.Web.Middleware;
+using HRManagementSystem.Web.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +45,7 @@ builder.WebHost.UseUrls(
     "http://0.0.0.0:5268"
 );
 var app = builder.Build();
+await DatabaseSeeder.SeedInitialHrAsync(app.Services);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -14,10 +14,10 @@ namespace HRManagementSystem.Web.Controllers.Api
             _userService = userService;
         }
 
-        [HttpPost("deactivate/{userId}")]
-        public async Task<IActionResult> DeactivateUser(int userId)
+        [HttpPost("deactivate/{employeeId}")]
+        public async Task<IActionResult> DeactivateUser(int employeeId)
         {
-            var result = await _userService.DeactivateUser(userId);
+            var result = await _userService.DeactivateUser(employeeId);
 
             if (!result)
             {

@@ -11,7 +11,7 @@ namespace HRManagementSystem.Repositories.Interfaces
         Task<User> CreateUser(User user);
         Task<User> UpdateUser(User user);
 
-        Task<bool> DeactivateUser(int id);
+        Task<bool> DeactivateUser(int EmployeeId);
 
     }
 }

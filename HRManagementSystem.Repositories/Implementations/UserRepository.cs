@@ -57,12 +57,12 @@ namespace HRManagementSystem.Repositories.Implementations
             }
         }
 
-        public async Task<bool> DeactivateUser(int id)
+        public async Task<bool> DeactivateUser(int employeeId)
         {
             try
             {
-
-                var user = await _context.Users.FindAsync(id);
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.EmployeeId == employeeId);
 
                 if (user == null)
                 {
@@ -71,17 +71,15 @@ namespace HRManagementSystem.Repositories.Implementations
 
                 user.IsActive = false;
 
-                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (DbUpdateException)
             {
                 throw;
             }
-
-
         }
-
+    
     }
 
 

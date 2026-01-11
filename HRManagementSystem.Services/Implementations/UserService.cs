@@ -77,15 +77,10 @@ namespace HRManagementSystem.Services.Implementations
             return UserMapper.ToDto(updatedUser);
         }
 
-        public async Task<bool> DeactivateUser(int UserId)
+        public async Task<bool> DeactivateUser(int EmployeeId)
         {
-            var existingUser = await _userRepository.GetUserById(UserId);
-            if (existingUser == null)
-            {
-                throw new ArgumentException("User not found", nameof(UserId));
-            }
 
-            await _userRepository.DeactivateUser(UserId);
+            await _userRepository.DeactivateUser(EmployeeId);
             return true;
         }
 

@@ -9,6 +9,6 @@ namespace HRManagementSystem.Services.Interfaces
         Task<UserDto> AddUser(UserDto userDto);
         Task<UserDto> UpdateUser(UserDto userDto);
 
-        Task<bool> DeactivateUser(int UserId);
+        Task<bool> DeactivateUser(int EmployeeId);
     }
 }
