@@ -181,8 +181,93 @@ dotnet ef database update
 # Run application
 dotnet run --project HRManagementSystem.Web
 ```
+##  Initial System Seeding (HR Department, Employee & Admin User)
 
+### Purpose
+
+When the application is started for the **first time**, the database is empty.
+To ensure the system is immediately accessible, an **initial HR setup** is
+created automatically during application startup.
+
+This process runs **only once** and is known as **startup seeding**.
+
+---
+
+### What Is Created Automatically
+
+If **no users exist** in the database, the system creates:
+
+- An **HR Department**
+- An **HR Employee**
+- An **Admin User** linked to the HR employee
+
+This guarantees that the system can be accessed and managed right after deployment.
+
+---
+
+### Seeding Flow
+
+The seeding process follows this strict order to respect database constraints:
+
+1. **Department**
+   - Name: `HR`
+   - Description: `Human Resources Department`
+
+2. **Employee**
+   - First Name: `HR`
+   - Last Name: `Admin`
+   - Email: `hr@company.com`
+   - Department: `HR`
+   - Active: `true`
+   - Has User Account: `true`
+
+3. **User**
+   - Username: `hr@company.com`
+   - Role: `Admin`
+   - Linked to the HR employee
+   - Password is securely hashed using ASP.NET Core Identity
+
+If at least one user already exists, **no seeding occurs**.
+
+---
+
+### Default Login Credentials
+
+After the first application run, log in using:
 Default entry point:
+
+Username: hr@company.com
+Password: 12345
+Role: Admin
+
+
+> The password is **never stored in plain text**.
+> It is hashed using `IPasswordHasher<User>` before being saved.
+
+---
+
+### Security Notes
+
+- Password hashing uses ASP.NET Core Identity
+- No plain-text passwords are stored
+- Startup seeding is limited to initial system access only
+- All future employees and users are created through the system UI
+
+---
+
+### Architectural Note
+
+Startup seeding is executed in the **Web layer** during application initialization.
+It is intentionally separated from business logic to preserve **clean architecture
+principles**.
+
+---
+
+### Summary
+
+The system automatically creates an HR department, an HR employee, and a linked
+Admin user on first startup to bootstrap secure system access.
+
 ```
 /Auth/Index
 ```
