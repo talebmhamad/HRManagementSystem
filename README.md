@@ -129,35 +129,38 @@ src/
   - Rapid development and maintainability
 
 - **ADO.NET** is used for:
-  - Aggregations (counts, summaries)
-  - Performance-critical queries
+  - Aggregations and summary queries
+  - Dashboard numeric indicators (KPIs and statistics)
+  - Attendance check-in and check-out operations
+  - Performance-critical database access
   - Full control over SQL execution
 
 
 ---
 
-##  API Documentation (Mobile-Ready Proof)
+## Controllers Overview
 
-The backend exposes API-ready endpoints that can be consumed by a **Flutter application**.
+The application exposes two types of controllers:
 
-### Example Endpoints
+- **MVC Controllers**
+  - Used for the web-based admin interface
+  - Handle Razor Views, forms, and server-rendered pages
+  - Intended for HR administrators and internal users
 
-- `GET /api/employees` → List all employees
-- `GET /api/attendance?startDate=&endDate=` → Attendance records
-- `POST /api/attendance/check` → Check-in / Check-out
-- `POST /auth/login` → User authentication
+- **API Controllers**
+  - Expose RESTful endpoints consumed by the Flutter mobile application
+  - Return JSON responses
+  - Share the same service layer as MVC controllers to ensure consistent business logic
 
- The same service layer is shared between MVC and API endpoints.
+This separation allows the system to support both web and mobile clients while
+maintaining a single, centralized business logic layer.
 
----
 
 ##  Security Considerations
 
 - Password hashing using `IPasswordHasher`
 - Claims-based authentication
 - Global exception handling middleware
-- Future-ready for JWT-based mobile authentication
-
 ---
 
 ##  Future Work
