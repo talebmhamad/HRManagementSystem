@@ -138,6 +138,14 @@ src/
 
 ---
 
+## Object-Oriented Design (OOP Usage)
+
+The system applies object-oriented principles through:
+- Interface-based service and repository abstractions
+- Dependency Injection for loose coupling
+- Separation of concerns across layered architecture
+- Encapsulation of business rules inside service classes
+
 ## Controllers Overview
 
 The application exposes two types of controllers:
